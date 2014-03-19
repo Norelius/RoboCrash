@@ -9,7 +9,13 @@ package me.norelius;
  * @version 2014-02-05
  */
 public class Command implements Comparable<Command> {
-  int registerStrength;
+  final int registerStrength;
+  final Action action;
+  
+  Command(int registerStrength, Action action){
+    this.registerStrength = registerStrength;
+    this.action = action;
+  }
 
   @Override
   public int compareTo(Command o) {

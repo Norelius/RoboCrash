@@ -1,15 +1,22 @@
 package me.norelius;
 
 /**
+ * Representing a player robot.
  * 
  * @author Jenny Norelius
- * @version 2014-02-05
+ * @edited Mar 19, 2014
  */
 public class Player {
+  private int id; //identifier
   private static final int STARTLIVES = 3;
   private int maxHealth;
   private int lives;
   private int health;
+  Direction direction = Direction.NORTH;
+  
+  public Player(int id) {
+    this.id = id;
+  }
 
   /**
    * @return
