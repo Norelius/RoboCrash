@@ -4,12 +4,12 @@ import java.util.List;
 
 /**
  * Represent a map tile in RoboCrash. Tiles can be pitfalls, have a wall in every
- * direction, contain a flag, conveyer belts and repair stations. Not yet implemented tile
+ * direction, contain a flag, conveyer belts, gears and repair stations. Not yet implemented tile
  * elements are laserbeams and pushers. Tile state is dependent on pixel placement and RBG
  * value as specified by RoboCrash RBG sheet.
  * 
  * @author Jenny Norelius
- * @edited Mar 19, 2014
+ * @edited Mar 27, 2014
  */
 public class Tile {
   Point point; // stores the x, y coordinates
@@ -36,6 +36,10 @@ public class Tile {
   boolean isStraightBelt = false; // is turn if false
   boolean isRightTurn = false; // if false == leftTurn
   Direction conveyerBeltExit = null;
+
+  // Gear information
+  boolean isGear = false;
+  boolean rightGear = false; // if false == leftGear
 
 
 
@@ -107,6 +111,7 @@ public class Tile {
       blue -= 2;
     }
     if (blue > 0) {
+
     }
   }
 
@@ -173,6 +178,8 @@ public class Tile {
         break;
       // empty variables
       case 6:
+        isGear = true;
+        setGearDirection(greenFacing);
       case 7:
         break;
     }
@@ -231,6 +238,19 @@ public class Tile {
       case 3:
         conveyerBeltExit = Direction.WEST;
         break;
+    }
+  }
+
+  /**
+   * Sets the gears rotations direction.
+   * 
+   * @param greenFacing
+   */
+  private void setGearDirection(int greenFacing) {
+    if (greenFacing == 0) {
+      rightGear = false;
+    } else if (greenFacing == 1) {
+      rightGear = true;
     }
   }
 }

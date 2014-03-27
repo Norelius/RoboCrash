@@ -711,5 +711,117 @@ public class PlayerRulesTest {
     assertEquals(player8, tiles.get(9).getPlayer());
   }
 
-  public void pushBackwardWallTest() {}
+  @Test
+  public void pushBackwardWallTest() {
+    // Create a small map of tiles for testing
+    List<Tile> tiles = new ArrayList<>();
+    tiles.add(new Tile(1, 1, 130, 0, 0)); // 0
+    tiles.add(new Tile(2, 1, 130, 0, 0));
+    tiles.add(new Tile(3, 1, 130, 0, 0));
+    tiles.add(new Tile(4, 1, 130, 0, 0));
+    tiles.add(new Tile(5, 1, 130, 0, 0));
+    tiles.add(new Tile(6, 1, 130, 0, 0));
+    tiles.add(new Tile(7, 1, 130, 0, 0));
+    tiles.add(new Tile(1, 2, 132, 0, 0)); // 7
+    tiles.add(new Tile(2, 2, 137, 0, 0));
+    tiles.add(new Tile(3, 2, 136, 0, 0));
+    tiles.add(new Tile(4, 2, 136, 0, 0));
+    tiles.add(new Tile(5, 2, 136, 0, 0));
+    tiles.add(new Tile(6, 2, 140, 0, 0));
+    tiles.add(new Tile(7, 2, 129, 0, 0));
+    tiles.add(new Tile(1, 3, 132, 0, 0)); // 14
+    tiles.add(new Tile(2, 3, 129, 0, 0));
+    tiles.add(new Tile(3, 3, 128, 0, 0));
+    tiles.add(new Tile(4, 3, 128, 0, 0));
+    tiles.add(new Tile(5, 3, 128, 0, 0));
+    tiles.add(new Tile(6, 3, 132, 0, 0));
+    tiles.add(new Tile(7, 3, 129, 0, 0));
+    tiles.add(new Tile(1, 4, 132, 0, 0)); // 21
+    tiles.add(new Tile(2, 4, 129, 0, 0));
+    tiles.add(new Tile(3, 4, 128, 0, 0));
+    tiles.add(new Tile(4, 4, 128, 0, 0));
+    tiles.add(new Tile(5, 4, 128, 0, 0));
+    tiles.add(new Tile(6, 4, 132, 0, 0));
+    tiles.add(new Tile(7, 4, 129, 0, 0));
+    tiles.add(new Tile(1, 5, 132, 0, 0)); // 28
+    tiles.add(new Tile(2, 5, 129, 0, 0));
+    tiles.add(new Tile(3, 5, 128, 0, 0));
+    tiles.add(new Tile(4, 5, 128, 0, 0));
+    tiles.add(new Tile(5, 5, 128, 0, 0));
+    tiles.add(new Tile(6, 5, 132, 0, 0));
+    tiles.add(new Tile(7, 5, 129, 0, 0));
+    tiles.add(new Tile(1, 6, 132, 0, 0)); // 35
+    tiles.add(new Tile(2, 6, 131, 0, 0));
+    tiles.add(new Tile(3, 6, 130, 0, 0));
+    tiles.add(new Tile(4, 6, 130, 0, 0));
+    tiles.add(new Tile(5, 6, 130, 0, 0));
+    tiles.add(new Tile(6, 6, 134, 0, 0));
+    tiles.add(new Tile(7, 6, 129, 0, 0));
+    tiles.add(new Tile(1, 7, 128, 0, 0)); // 42
+    tiles.add(new Tile(2, 7, 136, 0, 0));
+    tiles.add(new Tile(3, 7, 136, 0, 0));
+    tiles.add(new Tile(4, 7, 136, 0, 0));
+    tiles.add(new Tile(5, 7, 136, 0, 0));
+    tiles.add(new Tile(6, 7, 136, 0, 0));
+    tiles.add(new Tile(7, 7, 128, 0, 0));
+
+    // Test each tile's playerstate
+    for (Tile tile : tiles) {
+      assertNull(tile.getPlayer());
+    }
+
+    // Create players and add to board
+    Player player1 = new Player(1);
+    Player player2 = new Player(2);
+    Player player3 = new Player(3);
+    Player player4 = new Player(4);
+
+    tiles.get(9).setPlayer(player1);
+    tiles.get(8).setPlayer(player2);
+    tiles.get(11).setPlayer(player3);
+    tiles.get(40).setPlayer(player4);
+
+    // Navigation tests
+    PlayerCommand pcBack = new PlayerCommand(player1, new Command(50, Action.BACK));
+    PlayerCommand pcTurnRight = new PlayerCommand(player1, new Command(50, Action.TURNRIGHT));
+    PlayerCommand pcTurnLeft = new PlayerCommand(player1, new Command(50, Action.TURNLEFT));
+
+    PlayerRules.processCommand(tiles, pcTurnRight);
+    PlayerRules.processCommand(tiles, pcBack); // west
+    PlayerRules.processCommand(tiles, pcBack);
+    assertEquals(player1, tiles.get(9).getPlayer());
+    assertEquals(player2, tiles.get(8).getPlayer());
+    assertEquals(player3, tiles.get(11).getPlayer());
+    assertEquals(player4, tiles.get(40).getPlayer());
+    
+    PlayerRules.processCommand(tiles, pcTurnRight);
+    PlayerRules.processCommand(tiles, pcTurnRight);
+    PlayerRules.processCommand(tiles, pcBack); // east
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    assertEquals(player1, tiles.get(11).getPlayer());
+    assertEquals(player2, tiles.get(8).getPlayer());
+    assertEquals(player3, tiles.get(12).getPlayer());
+    assertEquals(player4, tiles.get(40).getPlayer());
+    
+    PlayerRules.processCommand(tiles, pcTurnRight);
+    PlayerRules.processCommand(tiles, pcBack); // south
+    PlayerRules.processCommand(tiles, pcTurnLeft);
+    PlayerRules.processCommand(tiles, pcBack); //east
+    PlayerRules.processCommand(tiles, pcTurnRight);
+    PlayerRules.processCommand(tiles, pcBack); // south
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    PlayerRules.processCommand(tiles, pcBack);
+    assertEquals(player1, tiles.get(33).getPlayer());
+    assertEquals(player2, tiles.get(8).getPlayer());
+    assertEquals(player3, tiles.get(12).getPlayer());
+    assertEquals(player4, tiles.get(40).getPlayer());
+
+  }
 }

@@ -7,11 +7,15 @@ import java.util.List;
  * GameMap stores all the map tile information and calls rules.
  * 
  * @author Jenny Norelius
- * @edited Mar 19, 2014
+ * @edited Mar 27, 2014
  */
 public class GameMap {
   private List<Tile> tiles;
+  // Loads all the game rules. Possibility of adding alternative rules.
   PlayerRules playerRules = new PlayerRules();
+  ConveyerRules conveyerRules = new ConveyerRules();
+  GearRules gearRules = new GearRules();
+  LaserRules laserRules = new LaserRules();
 
   /**
    * @param string
@@ -40,11 +44,12 @@ public class GameMap {
       for (int j = 0; j < playerCommands.get(i).size(); j++)
         playerRules.processCommand(tiles, playerCommands.get(i).get(j));
       for (Tile tile : tiles) {
-
+        // player dead maybe?
       }
+      conveyerRules.activate(tiles);
+      gearRules.activate(tiles);
+      laserRules.fireAllTheLasers(tiles);
       // TODO
-      // conveyor belts
-      // gears
       // lasers
     }
   }

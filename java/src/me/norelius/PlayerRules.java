@@ -59,20 +59,20 @@ public class PlayerRules {
     }
 
     // Finds and stores destination tile
-    Point destination = null;
+    Point destinationPoint = null;
     int add = action == Action.BACK ? -1 : 1;
     if (player.direction == Direction.NORTH) {
-      destination = new Point(playerTile.point.getX(), playerTile.point.getY() - add);
+      destinationPoint = new Point(playerTile.point.getX(), playerTile.point.getY() - add);
     } else if (player.direction == Direction.EAST) {
-      destination = new Point(playerTile.point.getX() + add, playerTile.point.getY());
+      destinationPoint = new Point(playerTile.point.getX() + add, playerTile.point.getY());
     } else if (player.direction == Direction.SOUTH) {
-      destination = new Point(playerTile.point.getX(), playerTile.point.getY() + add);
+      destinationPoint = new Point(playerTile.point.getX(), playerTile.point.getY() + add);
     } else if (player.direction == Direction.WEST) {
-      destination = new Point(playerTile.point.getX() - add, playerTile.point.getY());
+      destinationPoint = new Point(playerTile.point.getX() - add, playerTile.point.getY());
     }
     Tile destinationTile = null;
     for (Tile tile : tiles) {
-      if (tile.point.equals(destination))
+      if (tile.point.equals(destinationPoint))
         destinationTile = tile;
     }
 
@@ -145,5 +145,14 @@ public class PlayerRules {
         pushTile = tile;
     }
     moveRobot(tiles, destination.getPlayer(), destination, pushTile);
+  }
+
+  /**
+   * @param tiles
+   * @param tile
+   * @param destinationTile
+   */
+  public static void conveyPlayer(List<Tile> tiles, Tile playerTile, Tile destinationTile) {
+    moveRobot(tiles, playerTile.getPlayer(), playerTile, destinationTile);
   }
 }
